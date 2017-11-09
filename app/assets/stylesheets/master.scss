@@ -1,1 +1,37 @@
-@import "bootsrtap";
+@import "bootstrap";
+
+.navbar {
+  font-family: "Helvetica Neue", Helvetica;
+  font-weight: 200;
+  box-shadow: 0px 1px 3px #2a2a2a;
+  background-color: white;
+  }
+
+.navbar-inverse a.navbar-brand {
+  font-family: "Helvetica Neue", Helvetica;
+  font-weight: 100;
+  color: white;
+}
+
+path {
+  stroke: steelblue;
+  stroke-width: 1;
+  fill: none;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+.x.axis line {
+  stroke: lightgrey;
+}
+.x.axis .minor {
+  stroke-opacity: .5;
+}
+.x.axis path {
+  display: none;
+}
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: #000;
+}
