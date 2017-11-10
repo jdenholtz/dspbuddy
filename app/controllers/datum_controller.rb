@@ -1,16 +1,11 @@
 class DatumController < ApplicationController
+  require 'descriptive_statistics/safe'
 
   def show
-    
     @mydata = File.read("./app/assets/images/testdata.txt").split(/[\r\n]+/).map(&:to_f)
-    #@mydata = [1, 2, 3, 4, 3, 2, 1]
-    #puts ""
-    #puts "This Is My Data"
-    #puts ""
-    #puts @mydata.inspect
-    #puts ""
-    #puts "Data Complete"
-    #puts ""
+    #@mydata.extend(DescriptiveStatistics)
+    #mean = @mydata.mean
+    #@mydata = @mydata.map {|x| x - mean}    
   end
 
 end
