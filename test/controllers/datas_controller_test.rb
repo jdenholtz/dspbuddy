@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DatumControllerTest < ActionDispatch::IntegrationTest
+class DatasControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

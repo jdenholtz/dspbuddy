@@ -1,5 +1,5 @@
-class DatumController < ApplicationController
-  require 'descriptive_statistics/safe'
+class DatasController < ApplicationController
+   require 'descriptive_statistics/safe'
 
   def show
     @mydata = File.read("./app/assets/images/testdata.txt").split(/[\r\n]+/).map(&:to_f)
