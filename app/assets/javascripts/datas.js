@@ -1,19 +1,3 @@
-
-<div>
-  <h2 class="text-center">Your Data</h2>
-</div>
-<div class = "row">
-  <div id="chart" class="svg-container">
-  </div>
-</div>
-<div class="row">
-  <div class="col-10 offset-1">
-      <h2 class="text-center">Basic Statistics</h2>
-    </div>
-</div>
-
-
-<script>
 var yBreakPoint = 550;
 var xBreakPoint = 300;
 
@@ -35,6 +19,7 @@ var Chart = (function(window,d3) {
     timeStamp.push(i/dataSps);
   }
   //console.log(timestamp);
+  
 
 
   init(data, timeStamp);
@@ -151,6 +136,3 @@ var Chart = (function(window,d3) {
 })(window,d3);
 
 window.addEventListener('resize', Chart.render);
-      
-</script>
-

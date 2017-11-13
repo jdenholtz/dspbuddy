@@ -1,5 +1,13 @@
 @import "bootstrap";
 
+body{
+    font-size:  50px; 
+}
+
+h2{
+ font-size:  30px; 
+}
+
 .navbar {
   font-family: "Helvetica Neue", Helvetica;
   font-weight: 200;
@@ -22,7 +30,7 @@
 }
 
 .x.axis path {
-  display: none;
+  
 }
 
 .line {
@@ -32,10 +40,14 @@
 }
 
 .chart-area {
-  
+
 }
 
 .svg-container {
-  margin-left: 15px;
-  margin-right: 15px;
+    padding-left: 5%;
+}
+
+.svg-container text{
+    font-size: 0.8rem;
+  
 }
