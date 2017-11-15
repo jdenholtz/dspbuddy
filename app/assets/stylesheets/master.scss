@@ -1,14 +1,16 @@
 @import "bootstrap";
 
 body{
-    font-size:  50px;
     background-color: #A68CD8;
 
 }
 
-h2{
- font-size:  30px; 
+h1{
+  font-size:  1.7rem;
 }
+
+
+
 
 .navbar {
   font-family: "Helvetica Neue", Helvetica;
@@ -53,22 +55,36 @@ h2{
 .line {
   fill: none;
   stroke: #483174;
-  stroke-width: 0.5px;
-}
-
-
-
-.svg-container {
-    padding-left: 5%;
-  
-
-}
-
-.chart-area{
-  background-color: #DDCEFB;
-  box-shadow: 0px 1px 3px #2a2a2a;
+  stroke-width: 0.3px;
 }
 
 .svg-container text{
     font-size: 0.8rem;
+}
+
+.stats-box{
+    padding: none;
+}
+
+.shadow-box {
+  box-shadow: 0px 1px 3px #2a2a2a;
+  background-color: #DDCEFB;
+  display: block;
+  margin: auto;
+}
+
+.stats-table {
+  font-size: 1rem;
+  height: 100%;
+  width: 100%;
+  background-color: #DDCEFB;
+  border: none;
+  box-shadow: 0px 1px 3px #2a2a2a;
+}
+
+th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    border-radius: 25px;
+
 }

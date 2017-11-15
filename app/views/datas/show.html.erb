@@ -1,14 +1,55 @@
+<br />
 
-<div>
-  <h2 class="text-center">Your Data</h2>
-</div>
-<div>
-  <div id="chart" class="svg-container">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h1 class="text-center">Your Data</h2>
+      <div id="chart" class="svg-container">
+      </div>
+      <button id="normBtn">Normalize Data</button>
+    </div>
+    <br />
+    <br />
+    <br />
+    <div class="col">
+      <h1 class="text-center">Statistics</h3>
+      <div class="stats-box">
+        <table class="stats-table text-center">
+          <tr>
+            <th class="text-center">Statistic</th>
+            <th class="text-center">Value</th> 
+          </tr>
+          <tr>
+            <td>Max</td>
+            <td id="max">max</td>
+          </tr>
+          <tr>
+            <td>Min</td>
+            <td id="min">min</td> 
+          </tr>
+          <tr>
+            <td>Mean</td>
+            <td id="mean">mean</td>
+          </tr>
+          <tr>
+            <td>Median</td>
+            <td id="median">median</td>
+          </tr>
+          <tr>
+            <td>Variance</td>
+            <td id="variance">variance</td>
+          </tr>
+          <tr>            
+            <td>Deviation</td>
+            <td id="deviation">deviation</td>
+          </tr>          
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 <div>
   <div class="col-10 offset-1">
-    <h2 class="text-center">Basic Statistics</h2>
   </div>
 </div>
 
@@ -23,40 +64,32 @@ var Chart = (function(window,d3) {
 
   var data = <%=raw @mydata %>;
   var dataSps = <%=raw @mysps.to_i %>;
-  console.log(dataSps);
   var svg, x, y, xAxis, yAxis, dim, chartWrapper, line, path, yTitlePos, margin = {}, width, height;
-  //console.log(data.length);
   
+  // adds last tick to x axis by extending data to next second
   var finalTick = dataSps - ((data.length-1) % dataSps) + dataSps/2;
-  //console.log(fullest);
-
- var timeStamp = [];
+  
+  //  Set array of acurate timesignatures for data
+  var timeStamp = [];
   for (var i = 0; i < data.length + finalTick; i++) {
     timeStamp.push(i/dataSps);
   }
-  //console.log(timestamp);
+  
 
+  getAndFillStatistics();
 
-  init(data, timeStamp);
+  //Initial setup of data
+  init();
+  
+
   //called once the data is loaded
-  //(start)
-  function init(data, timeStamp) {
-    //console.log('Hello World!');
-    //console.log(timestamp.length);
-
+  function init() {
     //initialize scales
     xExtent = d3.extent(timeStamp, function(d,i) { return d });
-    //console.log(xExtent);
     yExtent = d3.extent(data, function(d,i) { return d });
-    //console.log(yExtent);
 
-    //
-   
-    //
-    
     x = d3.scaleLinear().domain(xExtent);
     y = d3.scaleLinear().domain(yExtent);
-    //console.log(x);
 
     //initialize axis
     xAxis = d3.axisBottom(x);
@@ -66,8 +99,9 @@ var Chart = (function(window,d3) {
     line = d3.line()
       .x(function(d,i) { return x(timeStamp[i]) })
       .y(function(d,i) { return y(data[i]) });
+
     //initialize svg
-    svg = d3.select('#chart').append('svg').classed('chart-area', true);
+    svg = d3.select('#chart').append('svg').classed('shadow-box', true);
     chartWrapper = svg.append('g');
     path = chartWrapper.append('path').datum(data).classed('line', true);
     chartWrapper.append('g').classed('x axis', true);
@@ -75,16 +109,12 @@ var Chart = (function(window,d3) {
     chartWrapper.append('text').classed('y-label', true);
     chartWrapper.append("text").classed('x-label', true);
  
-    
-
-    
-
     //render the chart
     render();
   }
-//(end)
 
-//(start)
+
+  //Actually renters the svg
   function render() {
 
     //get dimensions based on window size
@@ -98,33 +128,31 @@ var Chart = (function(window,d3) {
     svg
       .attr('width', width + margin.right + margin.left)
       .attr('height', height * 0.5 + margin.top + margin.bottom);
-    chartWrapper.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');  
+    chartWrapper.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')'); 
 
     //update the axis and line
     xAxis.scale(x);
     yAxis.scale(y);
 
+    //add axis lables with position based on window size
     chartWrapper.select('.y-label')
       .attr("y", -34)
       .attr("x", -yTitlePos)
       .attr("text-anchor", "middle")
       .attr("transform", "rotate(-90)")
       .text("Voltage (V)");
-
     chartWrapper.select('.x-label')
       .attr("y", xTitleVert)
       .attr("x", xTitleHor)
       .text("Time (s)");
       
-
-
+    //removes every other axis tick for small window
     if(window.innerWidth < xBreakPoint) {
        xAxis.ticks(5)
     }
     else {
       xAxis.ticks(11)
     }
-
     if(window.innerWidth < yBreakPoint) {
        yAxis.ticks(4)
     }
@@ -132,49 +160,81 @@ var Chart = (function(window,d3) {
       yAxis.ticks(9)
     }
 
-
-
-    
+    //adds axis with correct number of ticks
     svg.select('.x.axis')
       .attr('transform', 'translate(0,' + height * 0.5 + ')')
       .call(xAxis);
-
     svg.select('.y.axis')
       .call(yAxis);
 
-    
-   
+    //adds line for data
     path.attr('d', line);
   }
-//(end)
 
-//(start)
+  //sets graph dimensions based on window width
   function updateDimensions(winWidth) {
     margin.top = 20;
-    margin.right = 20;//winWidth < breakPoint ? 0 : 50;
-    margin.left = 50;//winWidth < breakPoint ? 0 : 50;
+    margin.right = 20;
+    margin.left = 50;
     margin.bottom = 50;
 
-    width = (winWidth - margin.left - margin.right);
+    width = (winWidth - margin.left - margin.right) * 0.75;
     height = .7 * width; //aspect ratio is 0.7
-    //console.log(height);
-    //console.log(width);
+    
+    //sets axis lables with relitave coordinates fixing in place
     yTitlePos = 0.267 * height + 0.6424;
-    //console.log(yTitlePos);
     xTitleVert = 0.3475 * width + 38.57;
     xTitleHor = 0.4847 * width - 22.552;
+    //console.log(width);
+    
+    $(".stats-box").css("height", (height * 0.5 + 70));
+    if( width < 393) {
+      $(".stats-box").css("width", (width + 70));
+      $(".stats-box").css("margin", "auto");
+      $(".stats-table").css("width", (width + 70)); 
+    }
+    else {
+      $(".stats-box").css("width", 'auto');
+      $(".stats-table").css("width", '100%');
+    }
+  }
 
+  function normalizeData() {
+    var mean = d3.mean(data);
+    for (var i = 0; i < data.length; i++) {
+      data[i] -= mean;
+    }
+    d3.select("svg").remove();
+    init();
+    getAndFillStatistics();
 
   }
+
+  function getAndFillStatistics() {
+    $("#max").html(d3.max(data).toFixed(4));
+    $("#min").html(d3.min(data).toFixed(4));
+    $("#mean").html(d3.mean(data).toFixed(4));
+    $("#median").html(d3.median(data).toFixed(4));
+    $("#variance").html(d3.variance(data).toFixed(4));
+    $("#deviation").html(d3.deviation(data).toFixed(4));
+  }
+
+
+  var element = document.getElementById("normBtn");
+  element.addEventListener("click", normalizeData, false);
 
   return {
     render : render
   }
-//(end)
 
 })(window,d3);
 
+function myFunction(){
+  Chart.returnData();
+  //console.log();
+}
+
+
 window.addEventListener('resize', Chart.render);
-      
 </script>
 
