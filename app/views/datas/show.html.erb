@@ -38,9 +38,7 @@
   </div>
 </div>
 <div>
-  <div class="col-10 offset-1">
-  </div>
-</div>
+
 
 
 <script>
@@ -86,7 +84,7 @@ var Chart = (function(window,d3) {
 
     //the path generator for the line chart
     line = d3.line()
-      .x(function(d,i) { return x(timeStamp[i]) })
+      .x(function(d,i) { return x(timeStamp[i])})
       .y(function(d,i) { return y(data[i]) });
 
     //initialize svg
@@ -111,7 +109,7 @@ var Chart = (function(window,d3) {
     
     //update x and y scales to new dimensions
     x.range([0, width]);
-    y.range([height*0.5, 0]);
+    y.range([height * 0.5, 0]);
 
     //update svg elements to new dimensions
     svg
@@ -223,12 +221,6 @@ var Chart = (function(window,d3) {
   }
 
 })(window,d3);
-
-function myFunction(){
-  Chart.returnData();
-  //console.log();
-}
-
 
 window.addEventListener('resize', Chart.render);
 </script>
