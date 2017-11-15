@@ -2,48 +2,37 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col">
+    <div class="col text-center">
       <h1 class="text-center">Your Data</h2>
       <div id="chart" class="svg-container">
       </div>
-      <button id="normBtn">Normalize Data</button>
+      <button id="normBtn" class="btn btn-sm">Normalize Data</button>
     </div>
     <br />
     <br />
     <br />
     <div class="col">
-      <h1 class="text-center">Statistics</h3>
+      <h1 class="edge-row text-center">Statistics</h3>
       <div class="stats-box">
-        <table class="stats-table text-center">
-          <tr>
-            <th class="text-center">Statistic</th>
-            <th class="text-center">Value</th> 
-          </tr>
-          <tr>
-            <td>Max</td>
-            <td id="max">max</td>
-          </tr>
-          <tr>
-            <td>Min</td>
-            <td id="min">min</td> 
-          </tr>
-          <tr>
-            <td>Mean</td>
-            <td id="mean">mean</td>
-          </tr>
-          <tr>
-            <td>Median</td>
-            <td id="median">median</td>
-          </tr>
-          <tr>
-            <td>Variance</td>
-            <td id="variance">variance</td>
-          </tr>
-          <tr>            
-            <td>Deviation</td>
-            <td id="deviation">deviation</td>
-          </tr>          
-        </table>
+        <div class="row edge-row">
+          <div class="col-6 padding-0">
+            <h3 class="inset-box">Max</h3>
+            <h3 class="inset-box">Min</h3>
+            <h3 class="inset-box">Mean</h3>
+            <h3 class="inset-box">Median</h3>
+            <h3 class="inset-box">Variance</h3>
+            <h3 class="inset-box">Deviation</h3>
+          </div>
+          <div class="col-6 padding-0">
+            <h3 class="inset-box" id="max">max</h3>
+            <h3 class="inset-box" id="min">min</h3>
+            <h3 class="inset-box" id="mean">meab</h3>
+            <h3 class="inset-box" id="median">median</h3>
+            <h3 class="inset-box" id="variance">variance</h3>
+            <h3 class="inset-box" id="deviation">deviation</h3>
+          </div>
+        </div> 
+
       </div>
     </div>
   </div>
@@ -185,17 +174,23 @@ var Chart = (function(window,d3) {
     yTitlePos = 0.267 * height + 0.6424;
     xTitleVert = 0.3475 * width + 38.57;
     xTitleHor = 0.4847 * width - 22.552;
-    //console.log(width);
+    console.log(width);
+    console.log(width);
     
     $(".stats-box").css("height", (height * 0.5 + 70));
+
     if( width < 393) {
       $(".stats-box").css("width", (width + 70));
       $(".stats-box").css("margin", "auto");
-      $(".stats-table").css("width", (width + 70)); 
+      $(".stats-table").css("width", (width + 70));
+      $("h3").css("padding-top", 6);
+      $("h3").css("padding-top", 6);
     }
     else {
       $(".stats-box").css("width", 'auto');
       $(".stats-table").css("width", '100%');
+      $("h3").css("padding-top", 0.0283 * width - 7.1666);
+      $("h3").css("padding-bottom", 0.0283 * width - 7.1666);
     }
   }
 
