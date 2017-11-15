@@ -2,14 +2,14 @@
 <div>
   <h2 class="text-center">Your Data</h2>
 </div>
-<div class = "row">
+<div>
   <div id="chart" class="svg-container">
   </div>
 </div>
-<div class="row">
+<div>
   <div class="col-10 offset-1">
-      <h2 class="text-center">Basic Statistics</h2>
-    </div>
+    <h2 class="text-center">Basic Statistics</h2>
+  </div>
 </div>
 
 
@@ -24,7 +24,7 @@ var Chart = (function(window,d3) {
   var data = <%=raw @mydata %>;
   var dataSps = <%=raw @mysps.to_i %>;
   console.log(dataSps);
-  var svg, x, y, xAxis, yAxis, dim, chartWrapper, line, path, margin = {}, width, height;
+  var svg, x, y, xAxis, yAxis, dim, chartWrapper, line, path, yTitlePos, margin = {}, width, height;
   //console.log(data.length);
   
   var finalTick = dataSps - ((data.length-1) % dataSps) + dataSps/2;
@@ -54,16 +54,16 @@ var Chart = (function(window,d3) {
    
     //
     
-    x = d3.scale.linear().domain(xExtent);
-    y = d3.scale.linear().domain(yExtent);
+    x = d3.scaleLinear().domain(xExtent);
+    y = d3.scaleLinear().domain(yExtent);
     //console.log(x);
 
     //initialize axis
-    xAxis = d3.svg.axis().orient('bottom');
-    yAxis = d3.svg.axis().orient('left');
+    xAxis = d3.axisBottom(x);
+    yAxis = d3.axisLeft(y);
 
     //the path generator for the line chart
-    line = d3.svg.line()
+    line = d3.line()
       .x(function(d,i) { return x(timeStamp[i]) })
       .y(function(d,i) { return y(data[i]) });
     //initialize svg
@@ -72,6 +72,12 @@ var Chart = (function(window,d3) {
     path = chartWrapper.append('path').datum(data).classed('line', true);
     chartWrapper.append('g').classed('x axis', true);
     chartWrapper.append('g').classed('y axis', true);
+    chartWrapper.append('text').classed('y-label', true);
+    chartWrapper.append("text").classed('x-label', true);
+ 
+    
+
+    
 
     //render the chart
     render();
@@ -92,11 +98,25 @@ var Chart = (function(window,d3) {
     svg
       .attr('width', width + margin.right + margin.left)
       .attr('height', height * 0.5 + margin.top + margin.bottom);
-    chartWrapper.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+    chartWrapper.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');  
 
     //update the axis and line
     xAxis.scale(x);
-    yAxis.scale(y);//.orient(window.innerWidth < breakPoint ? 'right' : 'left');
+    yAxis.scale(y);
+
+    chartWrapper.select('.y-label')
+      .attr("y", -34)
+      .attr("x", -yTitlePos)
+      .attr("text-anchor", "middle")
+      .attr("transform", "rotate(-90)")
+      .text("Voltage (V)");
+
+    chartWrapper.select('.x-label')
+      .attr("y", xTitleVert)
+      .attr("x", xTitleHor)
+      .text("Time (s)");
+      
+
 
     if(window.innerWidth < xBreakPoint) {
        xAxis.ticks(5)
@@ -112,6 +132,8 @@ var Chart = (function(window,d3) {
       yAxis.ticks(9)
     }
 
+
+
     
     svg.select('.x.axis')
       .attr('transform', 'translate(0,' + height * 0.5 + ')')
@@ -120,20 +142,14 @@ var Chart = (function(window,d3) {
     svg.select('.y.axis')
       .call(yAxis);
 
-
-    //var ticks = d3.selectAll(".tick text");
-
-      //ticks.attr("class", function(d,i){
-       //if(i%2 != 0) d3.select(this).remove();
-      //});
-
+    
+   
     path.attr('d', line);
   }
 //(end)
 
 //(start)
   function updateDimensions(winWidth) {
-    console.log(winWidth);
     margin.top = 20;
     margin.right = 20;//winWidth < breakPoint ? 0 : 50;
     margin.left = 50;//winWidth < breakPoint ? 0 : 50;
@@ -141,6 +157,14 @@ var Chart = (function(window,d3) {
 
     width = (winWidth - margin.left - margin.right);
     height = .7 * width; //aspect ratio is 0.7
+    //console.log(height);
+    //console.log(width);
+    yTitlePos = 0.267 * height + 0.6424;
+    //console.log(yTitlePos);
+    xTitleVert = 0.3475 * width + 38.57;
+    xTitleHor = 0.4847 * width - 22.552;
+
+
   }
 
   return {

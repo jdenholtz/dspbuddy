@@ -1,7 +1,9 @@
 @import "bootstrap";
 
 body{
-    font-size:  50px; 
+    font-size:  50px;
+    background-color: #A68CD8;
+
 }
 
 h2{
@@ -12,13 +14,28 @@ h2{
   font-family: "Helvetica Neue", Helvetica;
   font-weight: 200;
   box-shadow: 0px 1px 3px #2a2a2a;
-  background-color: white;
+  background-color: #483174;
   }
 
 .navbar-inverse a.navbar-brand {
-  font-family: "Helvetica Neue", Helvetica;
   font-weight: 100;
-  color: white;
+  color: #DDCEFB;
+}
+
+.navbar-light .navbar-toggler{
+  border-color: #DDCEFB;
+  color: #DDCEFB;
+}
+.navbar-nav{
+  font-size: 1.25rem;
+}
+
+#n-bar {
+ color: #DDCEFB; 
+}
+
+#n-bar a {
+  color: #DDCEFB;
 }
 
 
@@ -35,19 +52,23 @@ h2{
 
 .line {
   fill: none;
-  stroke: steelblue;
-  stroke-width: 1px;
+  stroke: #483174;
+  stroke-width: 0.5px;
 }
 
-.chart-area {
 
-}
 
 .svg-container {
     padding-left: 5%;
+  
+
+}
+
+.chart-area{
+  background-color: #DDCEFB;
+  box-shadow: 0px 1px 3px #2a2a2a;
 }
 
 .svg-container text{
     font-size: 0.8rem;
-  
 }
