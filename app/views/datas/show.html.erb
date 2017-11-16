@@ -3,25 +3,27 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col text-center">
-      <h1 class="text-center">Your Data</h2>
+        <h1 class="text-center inset-box">Your Data</h2>
       <div id="chart" class="svg-container">
       </div>
-      <button id="normBtn" class="btn btn-sm">Normalize Data</button>
+      <button id="normBtn" class="btn btn-sm raised-box">Normalize Data</button>
     </div>
     <br />
     <br />
     <br />
     <div class="col">
-      <h1 class="edge-row text-center">Statistics</h3>
+      <div class="edge-row">
+        <h1 class="text-center inset-box">Statistics</h3>
+      </div>
       <div class="stats-box">
         <div class="row edge-row">
           <div class="col-6 padding-0">
-            <h3 class="inset-box">Max</h3>
-            <h3 class="inset-box">Min</h3>
-            <h3 class="inset-box">Mean</h3>
-            <h3 class="inset-box">Median</h3>
-            <h3 class="inset-box">Variance</h3>
-            <h3 class="inset-box">Deviation</h3>
+            <h3 class="inset-box" id="maxBtn">Max</h3>
+            <h3 class="inset-box" id="minBtn">Min</h3>
+            <h3 class="inset-box" id="meanBtn">Mean</h3>
+            <h3 class="inset-box" id="medianBtn">Median</h3>
+            <h3 class="inset-box" id="varianceBtn">Variance</h3>
+            <h3 class="inset-box" id="deviationBtn">Deviation</h3>
           </div>
           <div class="col-6 padding-0">
             <h3 class="inset-box" id="max">max</h3>
@@ -47,11 +49,16 @@ var xBreakPoint = 300;
 
 
 var Chart = (function(window,d3) {
-    //console.log('Hello World!')
-
   var data = <%=raw @mydata %>;
   var dataSps = <%=raw @mysps.to_i %>;
   var svg, x, y, xAxis, yAxis, dim, chartWrapper, line, path, yTitlePos, margin = {}, width, height;
+  var maxToggle = false;
+  var minToggle = false;
+  var meanToggle = false;
+  var medianToggle = false;
+  var varianceToggle = false;
+  var deviationToggle = false;
+
   
   // adds last tick to x axis by extending data to next second
   var finalTick = dataSps - ((data.length-1) % dataSps) + dataSps/2;
@@ -82,26 +89,87 @@ var Chart = (function(window,d3) {
     xAxis = d3.axisBottom(x);
     yAxis = d3.axisLeft(y);
 
-    //the path generator for the line chart
+    //the path generator for the line chart and stat lines
     line = d3.line()
       .x(function(d,i) { return x(timeStamp[i])})
       .y(function(d,i) { return y(data[i]) });
+
+    if(maxToggle === true) {
+      maxLine = d3.line()
+        .x(function(d,i) { return x(timeStamp[i])})
+        .y(function(d,i) { return y(d3.max(data))});
+    }
+
+    if(minToggle === true) {
+      minLine = d3.line()
+        .x(function(d,i) { return x(timeStamp[i])})
+        .y(function(d,i) { return y(d3.min(data))});
+    }
+    console.log(d3.mean(data));
+    if(meanToggle === true) {
+      meanLine = d3.line()
+        .x(function(d,i) { return x(timeStamp[i])})
+        .y(function(d,i) { return y(d3.mean(data))});
+    }
+    
+    var mean = d3.median(data);
+    if(medianToggle === true) {
+      medianLine = d3.line()
+        .x(function(d,i) { return x(timeStamp[i])})
+        .y(function(d,i) { return y(mean)});
+    }
+
+    if(varianceToggle === true) {
+      varianceLine = d3.line()
+        .x(function(d,i) { return x(timeStamp[i])})
+        .y(function(d,i) { return y(d3.variance(data))});
+    }
+
+    if(deviationToggle === true) {
+      deviationLine = d3.line()
+        .x(function(d,i) { return x(timeStamp[i])})
+        .y(function(d,i) { return y(d3.deviation(data))});
+    }
 
     //initialize svg
     svg = d3.select('#chart').append('svg').classed('shadow-box', true);
     chartWrapper = svg.append('g');
     path = chartWrapper.append('path').datum(data).classed('line', true);
+
+    //stat togglers attsches lines to svg
+    if(maxToggle === true){
+        maxPath = chartWrapper.append('path').datum(data).classed('max-line', true);
+    }
+
+    if(minToggle === true){
+        minPath = chartWrapper.append('path').datum(data).classed('min-line', true);
+    }
+
+    if(meanToggle === true){
+        meanPath = chartWrapper.append('path').datum(data).classed('mean-line', true);
+    }
+
+    if(medianToggle === true){
+        medianPath = chartWrapper.append('path').datum(data).classed('median-line', true);
+    }
+
+    if(varianceToggle === true){
+        variancePath = chartWrapper.append('path').datum(data).classed('variance-line', true);
+    }
+
+    if(deviationToggle === true){
+        deviationPath = chartWrapper.append('path').datum(data).classed('deviation-line', true);
+    }
+
     chartWrapper.append('g').classed('x axis', true);
     chartWrapper.append('g').classed('y axis', true);
     chartWrapper.append('text').classed('y-label', true);
-    chartWrapper.append("text").classed('x-label', true);
- 
+    chartWrapper.append("text").classed('x-label', true); 
     //render the chart
     render();
   }
 
-
-  //Actually renters the svg
+  //renders the svg
   function render() {
 
     //get dimensions based on window size
@@ -153,9 +221,33 @@ var Chart = (function(window,d3) {
       .call(xAxis);
     svg.select('.y.axis')
       .call(yAxis);
+ 
 
     //adds line for data
     path.attr('d', line);
+    //adds lines for stats
+    if(maxToggle === true){
+      maxPath.attr('d', maxLine);
+    }
+    if(minToggle === true){
+      minPath.attr('d', minLine);
+    }
+
+    if(meanToggle === true){
+      meanPath.attr('d', meanLine);
+    }
+
+    if(medianToggle === true){
+      medianPath.attr('d', medianLine);
+    }
+
+    if(varianceToggle === true){
+      variancePath.attr('d', varianceLine);
+    }
+
+    if(deviationToggle === true){
+      deviationPath.attr('d', deviationLine);
+    }
   }
 
   //sets graph dimensions based on window width
@@ -172,9 +264,9 @@ var Chart = (function(window,d3) {
     yTitlePos = 0.267 * height + 0.6424;
     xTitleVert = 0.3475 * width + 38.57;
     xTitleHor = 0.4847 * width - 22.552;
-    console.log(width);
-    console.log(width);
+   // console.log(width);
     
+    //control spacing on window resize
     $(".stats-box").css("height", (height * 0.5 + 70));
 
     if( width < 393) {
@@ -191,7 +283,7 @@ var Chart = (function(window,d3) {
       $("h3").css("padding-bottom", 0.0283 * width - 7.1666);
     }
   }
-
+  //normalizes the data
   function normalizeData() {
     var mean = d3.mean(data);
     for (var i = 0; i < data.length; i++) {
@@ -202,7 +294,7 @@ var Chart = (function(window,d3) {
     getAndFillStatistics();
 
   }
-
+  //calculates statistics and adds them to the page
   function getAndFillStatistics() {
     $("#max").html(d3.max(data).toFixed(4));
     $("#min").html(d3.min(data).toFixed(4));
@@ -212,9 +304,105 @@ var Chart = (function(window,d3) {
     $("#deviation").html(d3.deviation(data).toFixed(4));
   }
 
+  //toggle functions add and remove the stat lines from the chart
+  function toggleMax() {
+      if(maxToggle === false){
+        maxToggle = true;
+        $("#maxBtn").css("box-shadow", '0 0 10px #FF6EFF inset');
+        $("#max").css("box-shadow", '0 0 10px #FF6EFF inset');
+      }
+      else {
+        maxToggle = false;
+        $("#maxBtn").css("box-shadow", '0 0 15px #2a2a2a inset');
+        $("#max").css("box-shadow", '0 0 15px #2a2a2a inset');
+      }
+      d3.select("svg").remove();
+      init();
+  }
 
-  var element = document.getElementById("normBtn");
-  element.addEventListener("click", normalizeData, false);
+  function toggleMin() {
+      if(minToggle === false){
+        minToggle = true;
+        $("#minBtn").css("box-shadow", '0 0 10px #50BFE6 inset');
+        $("#min").css("box-shadow", '0 0 10px #50BFE6 inset');
+      }
+      else {
+        minToggle = false;
+        $("#minBtn").css("box-shadow", '0 0 15px #2a2a2a inset');
+        $("#min").css("box-shadow", '0 0 15px #2a2a2a inset');
+      }
+      d3.select("svg").remove();
+      init();
+  }
+
+  function toggleMean() {
+      if(meanToggle === false){
+        meanToggle = true;
+        $("#meanBtn").css("box-shadow", '0 0 10px #FD5B78 inset');
+        $("#mean").css("box-shadow", '0 0 10px #FD5B78 inset');
+      }
+      else {
+        meanToggle = false;
+        $("#meanBtn").css("box-shadow", '0 0 15px #2a2a2a inset');
+        $("#mean").css("box-shadow", '0 0 15px #2a2a2a inset');
+      }
+      d3.select("svg").remove();
+      init();
+  }
+
+  function toggleMedian() {
+      if(medianToggle === false){
+        medianToggle = true;
+        $("#medianBtn").css("box-shadow", '0 0 10px #FF6037 inset');
+        $("#median").css("box-shadow", '0 0 10px #FF6037 inset');
+      }
+      else {
+        medianToggle = false;
+        $("#medianBtn").css("box-shadow", '0 0 15px #2a2a2a inset');
+        $("#median").css("box-shadow", '0 0 15px #2a2a2a inset');
+      }
+      d3.select("svg").remove();
+      init();
+  }
+
+  function toggleVariance() {
+      if(varianceToggle === false){
+        varianceToggle = true;
+        $("#varianceBtn").css("box-shadow", '0 0 10px #66FF66 inset');
+        $("#variance").css("box-shadow", '0 0 10px #66FF66 inset');
+      }
+      else {
+        varianceToggle = false;
+        $("#varianceBtn").css("box-shadow", '0 0 15px #2a2a2a inset');
+        $("#variance").css("box-shadow", '0 0 15px #2a2a2a inset');
+      }
+      d3.select("svg").remove();
+      init();
+  }
+
+  function toggleDeviation() {
+      if(deviationToggle === false){
+        deviationToggle = true;
+        $("#deviationBtn").css("box-shadow", '0 0 10px #FFFF66 inset');
+        $("#deviation").css("box-shadow", '0 0 10px #FFFF66 inset');
+      }
+      else {
+        deviationToggle = false;
+        $("#deviationBtn").css("box-shadow", '0 0 15px #2a2a2a inset');
+        $("#deviation").css("box-shadow", '0 0 15px #2a2a2a inset');
+      }
+      d3.select("svg").remove();
+      init();
+  }
+
+  //interactive elements
+  document.getElementById("normBtn").addEventListener("click", normalizeData, false);
+  document.getElementById("maxBtn").addEventListener("click", toggleMax, false);
+  document.getElementById("minBtn").addEventListener("click", toggleMin, false);
+  document.getElementById("meanBtn").addEventListener("click", toggleMean, false);
+  document.getElementById("medianBtn").addEventListener("click", toggleMedian, false);
+  document.getElementById("varianceBtn").addEventListener("click", toggleVariance, false);
+  document.getElementById("deviationBtn").addEventListener("click", toggleDeviation, false);
 
   return {
     render : render

@@ -4,6 +4,11 @@ body{
     /*background-color: #A68CD8;*/
     /*background-color: #826E78;*/
     background-color: #D6D6D6;
+    background: image_url('wood.jpeg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 
 
 }
@@ -16,6 +21,11 @@ h3 {
   text-align: center;  
   font-size: 15px;
   height: auto;
+  background: image_url('deep-bkrnd.jpeg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 
 
 }
@@ -32,6 +42,11 @@ h3 {
   border-bottom: 1.5px solid #BDBDBD;
   border-left: 1.5px solid #E8E8E8;
   border-top:  1.5px solid #E8E8E8;
+  background: image_url('silver.jpeg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
   }
 
 .navbar-inverse a.navbar-brand {
@@ -57,7 +72,7 @@ h3 {
 
 
 .axis path,
-.axis line {
+.axis line, {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
@@ -83,14 +98,20 @@ h3 {
 }
 
 .shadow-box {
-  box-shadow: 0 0 5px #2a2a2a inset;
-  border-radius: 25px;
   display: block;
   margin: auto;
-  border-left: 1.5px solid #BDBDBD;
-  border-top: 1.5px solid #BDBDBD;
-  border-right: 1.5px solid #E8E8E8;
-  border-bottom:  1.5px solid #E8E8E8;
+  background: image_url('deep-bkrnd.jpeg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;  
+
+  box-shadow: 0 0 20px #2a2a2a inset;
+  border-radius: 25px;
+  border-left: 2px solid  #1B1B1B;
+  border-top: 2px solid   #1B1B1B;
+  border-right: 2px solid #363636;
+  border-bottom:  2px solid #363636;
 }
 
 
@@ -99,12 +120,13 @@ h3 {
   font-size: 1rem;
   height: 100%;
   width: 100%;
-  box-shadow: 0 0 5px #2a2a2a inset;
+  box-shadow: 0 0 20px #FF0066 inset;
   border-left: 2px solid #BDBDBD;
   border-top: 2px solid #BDBDBD;
-  border-right: 2px solid #E8E8E8;
-  border-bottom:  2px solid #E8E8E8;
+  border-right: 2px solid #A9A9A9;
+  border-bottom:  2px solid #A9A9A9;
   border-radius: 25px;
+
   
   
 }
@@ -123,12 +145,17 @@ th, td {
 }
 
 .inset-box {
-  box-shadow: 0 0 5px #2a2a2a inset;
-  border-left: 2px solid #BDBDBD;
-  border-top: 2px solid #BDBDBD;
-  border-right: 2px solid #E8E8E8;
-  border-bottom:  2px solid #E8E8E8;
+  box-shadow: 0 0 15px #2a2a2a inset;
+  border-left: 2px solid  #1B1B1B;
+  border-top: 2px solid   #1B1B1B;
+  border-right: 2px solid #363636;
+  border-bottom:  2px solid #363636;
   border-radius: 25px;
+  background: image_url('deep-bkrnd.jpeg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;  
 }
 
 .raised-box {
@@ -150,3 +177,45 @@ th, td {
 .edge-row {
   padding-right: 15px !important;
 }
+
+.max-line, .min-line, .mean-line, median-line, variance-line, deviation-line {
+  fill: none;
+  shape-rendering: crispEdges;
+}
+
+.max-line {
+  stroke: #FF6EFF;
+}
+
+
+.min-line {
+  stroke: #50BFE6;
+}
+
+
+.mean-line {
+  stroke: #FD5B78;
+  shadow: 0 0 5px #2a2a2a;
+}
+
+
+.median-line {
+  stroke: #FF6037;
+}
+
+
+.variance-line {
+  stroke: #66FF66;
+}
+
+
+.deviation-line {
+  stroke: #FFFF66;
+}
+
+#maxBtn, #minBtn, #meanBtn, #medianBtn, #varianceBtn, #deviationBtn :hover {
+  cursor: pointer;
+}
+
+
+
