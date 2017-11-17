@@ -49,38 +49,49 @@ var xBreakPoint = 300;
 
 
 var Chart = (function(window,d3) {
-  var data = <%=raw @mydata %>;
+  var data = <%=raw @plotData %>;
   var dataSps = <%=raw @mysps.to_i %>;
   var svg, x, y, xAxis, yAxis, dim, chartWrapper, line, path, yTitlePos, margin = {}, width, height;
+  var max, min, mean, median, variance, deviation, maxLine, minLine, meanLine, medianLine, varianceLine, deviationLine, maxPath, minPath, meanPath, medianPath, variancePath, deviationPath;
+  var origonalMean = d3.mean(data);
   var maxToggle = false;
   var minToggle = false;
   var meanToggle = false;
   var medianToggle = false;
   var varianceToggle = false;
   var deviationToggle = false;
+  var normalizeToggle = false;
 
   
   // adds last tick to x axis by extending data to next second
-  var finalTick = dataSps - ((data.length-1) % dataSps) + dataSps/2;
-  
+  //var secondsOfData = data.length / dataSps;
+  //var secondsToDisplayOnAxis = Math.ceil(secondsOfData);
+  //var secondsToAdd = secondsToDisplayOnAxis - secondsOfData;
+  //var samplesToAdd = secondsToAdd * dataSps;
+  //var totalSamples = data.length + samplesToAdd;
+
+  var totalSamples = data.length + (Math.ceil(data.length / dataSps) - (data.length / dataSps)) * dataSps;
+  //console.log(secondsOfData);
+  //console.log(secondsToDisplayOnAxis);
+  //console.log(secondsToAdd);
+  //console.log(samplesToAdd);
+  //console.log(totalSamples);
+
   //  Set array of acurate timesignatures for data
   var timeStamp = [];
-  for (var i = 0; i < data.length + finalTick; i++) {
+  for (var i = 0; i <= totalSamples; i++) {
     timeStamp.push(i/dataSps);
   }
   
-
   getAndFillStatistics();
-
+  
   //Initial setup of data
   init();
-  
-
   //called once the data is loaded
   function init() {
     //initialize scales
     xExtent = d3.extent(timeStamp, function(d,i) { return d });
-    yExtent = d3.extent(data, function(d,i) { return d });
+    yExtent = d3.extent(data, function(d,i) { return (d + d * 0.1)});
 
     x = d3.scaleLinear().domain(xExtent);
     y = d3.scaleLinear().domain(yExtent);
@@ -97,38 +108,37 @@ var Chart = (function(window,d3) {
     if(maxToggle === true) {
       maxLine = d3.line()
         .x(function(d,i) { return x(timeStamp[i])})
-        .y(function(d,i) { return y(d3.max(data))});
+        .y(function(d,i) { return y(max)});
     }
 
     if(minToggle === true) {
       minLine = d3.line()
         .x(function(d,i) { return x(timeStamp[i])})
-        .y(function(d,i) { return y(d3.min(data))});
+        .y(function(d,i) { return y(min)});
     }
-    console.log(d3.mean(data));
+    
     if(meanToggle === true) {
       meanLine = d3.line()
         .x(function(d,i) { return x(timeStamp[i])})
-        .y(function(d,i) { return y(d3.mean(data))});
+        .y(function(d,i) { return y(mean)});
     }
     
-    var mean = d3.median(data);
     if(medianToggle === true) {
       medianLine = d3.line()
         .x(function(d,i) { return x(timeStamp[i])})
-        .y(function(d,i) { return y(mean)});
+        .y(function(d,i) { return y(median)});
     }
 
     if(varianceToggle === true) {
       varianceLine = d3.line()
         .x(function(d,i) { return x(timeStamp[i])})
-        .y(function(d,i) { return y(d3.variance(data))});
+        .y(function(d,i) { return y(variance)});
     }
 
     if(deviationToggle === true) {
       deviationLine = d3.line()
         .x(function(d,i) { return x(timeStamp[i])})
-        .y(function(d,i) { return y(d3.deviation(data))});
+        .y(function(d,i) { return y(deviation)});
     }
 
     //initialize svg
@@ -284,24 +294,44 @@ var Chart = (function(window,d3) {
     }
   }
   //normalizes the data
-  function normalizeData() {
-    var mean = d3.mean(data);
-    for (var i = 0; i < data.length; i++) {
-      data[i] -= mean;
+  function toggleNorm() {
+    if(normalizeToggle === false){
+      for (var i = 0; i < data.length; i++) {
+        data[i] -= origonalMean;
+      }
+      normalizeToggle = true;
+      $("#normBtn").css("box-shadow", '0 0 20px #722B3E');
     }
+    else {
+     for (var i = 0; i < data.length; i++) {
+        data[i] += origonalMean;
+      } 
+      normalizeToggle = false;
+      $("#normBtn").css("box-shadow", '0 0 15px black');
+    }
+    getAndFillStatistics();
     d3.select("svg").remove();
     init();
-    getAndFillStatistics();
-
+    
   }
   //calculates statistics and adds them to the page
   function getAndFillStatistics() {
-    $("#max").html(d3.max(data).toFixed(4));
-    $("#min").html(d3.min(data).toFixed(4));
-    $("#mean").html(d3.mean(data).toFixed(4));
-    $("#median").html(d3.median(data).toFixed(4));
-    $("#variance").html(d3.variance(data).toFixed(4));
-    $("#deviation").html(d3.deviation(data).toFixed(4));
+    calculateStatistics();
+    $("#max").html(max.toFixed(4));
+    $("#min").html(min.toFixed(4));
+    $("#mean").html(mean.toFixed(4));
+    $("#median").html(median.toFixed(4));
+    $("#variance").html(variance.toFixed(4));
+    $("#deviation").html(deviation.toFixed(4));
+  }
+
+  function calculateStatistics(){
+    max = d3.max(data);
+    min = d3.min(data);
+    mean = d3.mean(data);
+    median = d3.median(data);
+    variance = d3.variance(data);
+    deviation = d3.deviation(data);
   }
 
   //toggle functions add and remove the stat lines from the chart
@@ -310,14 +340,15 @@ var Chart = (function(window,d3) {
         maxToggle = true;
         $("#maxBtn").css("box-shadow", '0 0 10px #FF6EFF inset');
         $("#max").css("box-shadow", '0 0 10px #FF6EFF inset');
+        d3.select("svg").remove();
+        init();
       }
       else {
         maxToggle = false;
         $("#maxBtn").css("box-shadow", '0 0 15px #2a2a2a inset');
         $("#max").css("box-shadow", '0 0 15px #2a2a2a inset');
+        d3.select(".max-line").remove();
       }
-      d3.select("svg").remove();
-      init();
   }
 
   function toggleMin() {
@@ -325,14 +356,16 @@ var Chart = (function(window,d3) {
         minToggle = true;
         $("#minBtn").css("box-shadow", '0 0 10px #50BFE6 inset');
         $("#min").css("box-shadow", '0 0 10px #50BFE6 inset');
+        d3.select("svg").remove();
+        init();
       }
       else {
         minToggle = false;
         $("#minBtn").css("box-shadow", '0 0 15px #2a2a2a inset');
         $("#min").css("box-shadow", '0 0 15px #2a2a2a inset');
+        d3.select(".min-line").remove();
       }
-      d3.select("svg").remove();
-      init();
+      
   }
 
   function toggleMean() {
@@ -340,14 +373,16 @@ var Chart = (function(window,d3) {
         meanToggle = true;
         $("#meanBtn").css("box-shadow", '0 0 10px #FD5B78 inset');
         $("#mean").css("box-shadow", '0 0 10px #FD5B78 inset');
+        d3.select("svg").remove();
+        init();
       }
       else {
         meanToggle = false;
         $("#meanBtn").css("box-shadow", '0 0 15px #2a2a2a inset');
         $("#mean").css("box-shadow", '0 0 15px #2a2a2a inset');
+        d3.select(".mean-line").remove();
       }
-      d3.select("svg").remove();
-      init();
+
   }
 
   function toggleMedian() {
@@ -355,14 +390,16 @@ var Chart = (function(window,d3) {
         medianToggle = true;
         $("#medianBtn").css("box-shadow", '0 0 10px #FF6037 inset');
         $("#median").css("box-shadow", '0 0 10px #FF6037 inset');
+        d3.select("svg").remove();
+        init();
       }
       else {
         medianToggle = false;
         $("#medianBtn").css("box-shadow", '0 0 15px #2a2a2a inset');
         $("#median").css("box-shadow", '0 0 15px #2a2a2a inset');
+        d3.select(".median-line").remove();
       }
-      d3.select("svg").remove();
-      init();
+      
   }
 
   function toggleVariance() {
@@ -370,14 +407,16 @@ var Chart = (function(window,d3) {
         varianceToggle = true;
         $("#varianceBtn").css("box-shadow", '0 0 10px #66FF66 inset');
         $("#variance").css("box-shadow", '0 0 10px #66FF66 inset');
+        d3.select("svg").remove();
+        init();
       }
       else {
         varianceToggle = false;
         $("#varianceBtn").css("box-shadow", '0 0 15px #2a2a2a inset');
         $("#variance").css("box-shadow", '0 0 15px #2a2a2a inset');
+        d3.select(".variance-line").remove();
       }
-      d3.select("svg").remove();
-      init();
+
   }
 
   function toggleDeviation() {
@@ -385,18 +424,20 @@ var Chart = (function(window,d3) {
         deviationToggle = true;
         $("#deviationBtn").css("box-shadow", '0 0 10px #FFFF66 inset');
         $("#deviation").css("box-shadow", '0 0 10px #FFFF66 inset');
+        d3.select("svg").remove();
+        init();
       }
       else {
         deviationToggle = false;
         $("#deviationBtn").css("box-shadow", '0 0 15px #2a2a2a inset');
         $("#deviation").css("box-shadow", '0 0 15px #2a2a2a inset');
+        d3.select(".deviation-line").remove();
       }
-      d3.select("svg").remove();
-      init();
+      
   }
 
   //interactive elements
-  document.getElementById("normBtn").addEventListener("click", normalizeData, false);
+  document.getElementById("normBtn").addEventListener("click", toggleNorm, false);
   document.getElementById("maxBtn").addEventListener("click", toggleMax, false);
   document.getElementById("minBtn").addEventListener("click", toggleMin, false);
   document.getElementById("meanBtn").addEventListener("click", toggleMean, false);

@@ -42,7 +42,7 @@ h3 {
   border-bottom: 1.5px solid #BDBDBD;
   border-left: 1.5px solid #E8E8E8;
   border-top:  1.5px solid #E8E8E8;
-  background: image_url('silver.jpeg') no-repeat center center fixed;
+  background: image_url('silver2.jpeg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -155,15 +155,20 @@ th, td {
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
-  background-size: cover;  
+  background-size: cover;
 }
 
 .raised-box {
-  box-shadow: 0 0 2px #2a2a2a;
-  border-right: 2px solid #BDBDBD;
-  border-bottom: 2px solid #BDBDBD;
-  border-left: 2px solid #E8E8E8;
-  border-top:  2px solid #E8E8E8;
+  box-shadow: 1px 1px 15px #black;
+  border-right: 2px solid #ADADAD;
+  border-bottom: 2px solid #ADADAD;
+  border-left: 2px solid #EDEDED;
+  border-top:  2px solid #EDEDED;
+  background: image_url('silver2.jpeg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 .padding-0{
@@ -213,8 +218,16 @@ th, td {
   stroke: #FFFF66;
 }
 
-#maxBtn, #minBtn, #meanBtn, #medianBtn, #varianceBtn, #deviationBtn :hover {
+#maxBtn, #minBtn, #meanBtn, #medianBtn, #varianceBtn, #deviationBtn, #fakeBtn:hover {
   cursor: pointer;
+}
+
+#normBtn {
+  background: image_url('silver2.jpeg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 
