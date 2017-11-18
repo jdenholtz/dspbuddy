@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171109211856) do
+ActiveRecord::Schema.define(version: 20171118074434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "data", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "dataset_id"
+    t.integer  "channel"
+    t.index ["dataset_id"], name: "index_data_on_dataset_id", using: :btree
+  end
+
+  create_table "datasets", force: :cascade do |t|
+    t.string   "title"
+    t.string   "description"
+    t.integer  "channels"
+    t.integer  "sps"
+    t.boolean  "share"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "user_id"
+    t.index ["user_id"], name: "index_datasets_on_user_id", using: :btree
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

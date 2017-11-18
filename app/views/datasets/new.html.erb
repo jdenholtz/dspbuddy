@@ -1,0 +1,23 @@
+<div class="col-10 offset-1">
+  <br />
+  <div class="text-center col-10 offset-1 ">
+    <br />
+    <h1 class="inset-box"> Enter your Dataset Details</h1>
+    <br />
+    <div class="inset-box">
+      <%= simple_form_for @dataset do |f| %>
+      <br />
+      <div class="col-10 offset-1">
+        <%= f.input :title %>
+        <%= f.input :description %>
+        <%= f.input :channels %>
+        <%= f.input :sps %>
+        <%= f.input :share %>
+    </div>
+      <%= f.submit 'Create', class: 'btn btn-sm raised-box' %>
+
+    <% end %>
+    <br />
+  </div>
+  <br />
+</div>

@@ -44,6 +44,9 @@
 
 
 <script>
+
+d3.select("svg").remove();
+
 var yBreakPoint = 550;
 var xBreakPoint = 300;
 
@@ -91,8 +94,14 @@ var Chart = (function(window,d3) {
   function init() {
     //initialize scales
     xExtent = d3.extent(timeStamp, function(d,i) { return d });
-    yExtent = d3.extent(data, function(d,i) { return (d + d * 0.1)});
+    yExtent = d3.extent(data, function(d,i) { return (d)});
+    console.log(yExtent);
 
+    var range = Math.abs(yExtent[1]-yExtent[0]) * 0.025;
+    console.log(range);
+    yExtent[0] = yExtent[0] - range;
+    yExtent[1] = yExtent[1] + range;
+    console.log(yExtent);
     x = d3.scaleLinear().domain(xExtent);
     y = d3.scaleLinear().domain(yExtent);
 
@@ -274,7 +283,7 @@ var Chart = (function(window,d3) {
     yTitlePos = 0.267 * height + 0.6424;
     xTitleVert = 0.3475 * width + 38.57;
     xTitleHor = 0.4847 * width - 22.552;
-   // console.log(width);
+    // console.log(width);
     
     //control spacing on window resize
     $(".stats-box").css("height", (height * 0.5 + 70));
@@ -300,7 +309,7 @@ var Chart = (function(window,d3) {
         data[i] -= origonalMean;
       }
       normalizeToggle = true;
-      $("#normBtn").css("box-shadow", '0 0 20px #722B3E');
+      $("#normBtn").css("box-shadow", '0 0 20px 4px #722B3E');
     }
     else {
      for (var i = 0; i < data.length; i++) {

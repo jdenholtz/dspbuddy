@@ -26,10 +26,13 @@ h3 {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-
-
 }
 
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
 
 
 
@@ -228,7 +231,10 @@ th, td {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  margin: 10px;
 }
 
-
+#gone {
+  display: none !important;
+}
 
