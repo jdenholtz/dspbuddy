@@ -2,21 +2,21 @@
 <div class="col-10 offset-1">
   <div class="text-center inset-box">
     <h1><%= @dataset.title %></h1>
-    <ul>
-      <li><%= @dataset.description %></li><br />
-      <li>Number of Channels: <%= @dataset.channels %></li><br />
-      <li>Samples Per Second: <%= @dataset.sps %></li><br />
-      <% if @dataset.share == true %>
-        <li>Private:  No</li>
-      <% else %>
-        <li>Private:  Yes</li>
-      <% end %>
-        <li>ID:  <%= @dataset.id %></li>
-      <% if @dataset.user.present? %>
-        <li><small><%= @dataset.user.email %></small></li>
-      <% end %>
-    </ul>
   </div>
+    <div class="text-center inset-box">
+        <h2><%= @dataset.description %></h2>
+        <h2>Number of Channels: <%= @dataset.channels %></h2>
+        <h2>Samples Per Second: <%= @dataset.sps %></h2>
+        <% if @dataset.share == true %>
+          <h2>Private:  No</h2>
+        <% else %>
+          <h2>Private:  Yes</h2>
+        <% end %>
+          <h2>ID:  <%= @dataset.id %></h2>
+        <% if @dataset.user.present? %>
+          <h2><small><%= @dataset.user.email %></small></h2>
+        <% end %>
+    </div>
   <br />
   <% @dataset.channels.times do |ch| %>
     <% present = false %>
@@ -28,38 +28,29 @@
 
     <% if present != true %>
       <div class="text-center inset-box">
-        <h1>Channel <%= ch + 1 %></h1>
+        <h1>Channel <%= ch + 1 %> Data</h1>
         <%= simple_form_for @datum, url:dataset_datas_path(@dataset) do |f| %>
-            <br />
-            <div class="col-10 offset-1">
-              <%= f.input :name %>
+          <div class="col-10 offset-1">
+            <%= f.input :name %>
 
-              <span id="gone"><%= f.input :channel, :input_html => { :value => ch + 1 } %></span>
+            <span id="gone"><%= f.input :channel, :input_html => { :value => ch + 1 } %></span>
           </div>
-            <%= f.submit 'Add Channel Data', class: 'btn btn-sm raised-box' %>
+        </div>
+        <div class="text-center">
+          <%= f.submit 'Add Channel Data', class: 'btn btn-sm raised-box' %>
+        </div>
         <% end %>
-      </div>
+        <br />
+      
       <br />
     <% end %>
   <% end %>
 
-  <% testDatum = [] %>
-
-  <% @dataset.datum.count do |i| %>
-    <% puts @dataset.datum[i] %>
-  <% end %>
-
-
   <% @dataset.datum.each do |datum| %>
-    <% testDatum << datum %>
-  <% end %>
-
-
-  <% @dataset.datum.each do |datum| %>
-    <div class="inset-box text-center">
+    <div class="inset-box text-center fancy-link">
       <h1><%= link_to datum.name, dataset_data_path(:id => datum.id, :dataset_id => @dataset.id) %></h1>
       
-      <h1>Channel: <%= datum.channel %></h1>
+      <h2>Channel: <%= datum.channel %></h2>
       
      </div>
      <br />

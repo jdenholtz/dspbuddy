@@ -17,6 +17,11 @@ h1 {
   font-size:  1.7rem;
 }
 
+
+h2{
+  font-size:  1rem; 
+}
+
 h3 {
   text-align: center;  
   font-size: 15px;
@@ -238,3 +243,36 @@ th, td {
   display: none !important;
 }
 
+.fancy-link a{
+  color: black;  
+}
+
+.fancy-link:hover {
+  box-shadow: 0 0 25px #722B3E inset;
+}
+
+.fancy-link a:hover{
+  text-decoration: none;  
+}
+
+#center-button {
+  background: image_url('silver2.jpeg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  margin: 10px;  
+}
+
+
+input[type=text]:focus {
+    box-shadow: 0 0 12px #722B3E inset;
+    border-color: black;
+
+}
+
+input[type=text] {
+  border-color: #722B3E;
+  box-shadow: 0 0 25px #722B3E inset;
+  border-width: thin;
+}

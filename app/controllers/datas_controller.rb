@@ -12,7 +12,7 @@ class DatasController < ApplicationController
     puts ""
     puts @datum.channel.inspect
 
-    mydata = File.read("./app/assets/images/testdata3.data").split(/[\r\n]+/)#.map(&:to_f)
+    mydata = File.read("./app/assets/images/testdata3.data").split(/[\r\n]+/)
     mydata.length.times do |index|
       mydata[index] = mydata[index].split(/\t/).map(&:to_f)
     end
