@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171118074434) do
+ActiveRecord::Schema.define(version: 20171120004654) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,13 @@ ActiveRecord::Schema.define(version: 20171118074434) do
     t.index ["dataset_id"], name: "index_data_on_dataset_id", using: :btree
   end
 
+  create_table "datafiles", force: :cascade do |t|
+    t.integer  "dataset_id"
+    t.string   "datafile"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "datasets", force: :cascade do |t|
     t.string   "title"
     t.string   "description"
@@ -33,6 +40,7 @@ ActiveRecord::Schema.define(version: 20171118074434) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "user_id"
+    t.string   "datafile"
     t.index ["user_id"], name: "index_datasets_on_user_id", using: :btree
   end
 

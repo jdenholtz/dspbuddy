@@ -6,4 +6,8 @@ Rails.application.routes.draw do
   resources :datasets do
     resources :datas, only: [:create, :show]
   end
+
+  resources :datasets do
+    resources :datafiles, only: [:create]
+  end
 end

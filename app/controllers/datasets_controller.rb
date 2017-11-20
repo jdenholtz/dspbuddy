@@ -24,7 +24,7 @@ class DatasetsController < ApplicationController
   private
 
   def dataset_params
-    params.require(:dataset).permit(:title, :description, :channels, :sps, :share)
+    params.require(:dataset).permit(:title, :description, :channels, :sps, :share, :datafile)
   end
 
 end

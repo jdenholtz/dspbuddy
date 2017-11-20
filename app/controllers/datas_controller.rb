@@ -9,10 +9,18 @@ class DatasController < ApplicationController
 
   def show
     @datum = Datum.find(params[:id])
+    #testdata = File.read(@datum.dataset.datafile.file.file).split(/[\r\n]+/)
     puts ""
-    puts @datum.channel.inspect
+    puts "test"
+    #puts testdata.inspect
+    #puts @datum.dataset.datafile.file.nil?.inspect
+    #puts @datum.dataset.datafile.file.file.inspect
+    puts "test"
+    puts ""
 
-    mydata = File.read("./app/assets/images/testdata3.data").split(/[\r\n]+/)
+
+
+    mydata = File.read(@datum.dataset.datafile.file.file).split(/[\r\n]+/)
     mydata.length.times do |index|
       mydata[index] = mydata[index].split(/\t/).map(&:to_f)
     end
