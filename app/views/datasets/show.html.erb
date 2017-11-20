@@ -12,11 +12,9 @@
         <% else %>
           <h2>Private:  Yes</h2>
         <% end %>
-          <h2>ID:  <%= @dataset.id %></h2>
         <% if @dataset.user.present? %>
           <h2><small><%= @dataset.user.email %></small></h2>
         <% end %>
-        <h2>File: <%= @dataset.datafile %></h2>
     </div>
   <br />
   <% @dataset.channels.times do |ch| %>
