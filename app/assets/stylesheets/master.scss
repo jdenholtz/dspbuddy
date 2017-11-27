@@ -9,6 +9,10 @@ body{
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    font-family: 'Orbitron', sans-serif;
+    /*font-family: 'Ubuntu', sans-serif;*/
+    font-weight: bold;
+
 
 
 }
@@ -59,15 +63,28 @@ ul {
 
 .navbar-inverse a.navbar-brand {
   font-weight: 100;
-  /*color: #DDCEFB;*/
+  
+}
+
+a {
+  color: black;
+}
+
+p {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  
 }
 
 .navbar-light .navbar-toggler{
-  /*border-color: #DDCEFB;*/
-  /*color: #DDCEFB;*/
+
 }
 .navbar-nav{
   font-size: 1.25rem;
+}
+
+.navbar-nav a {
+  color: black;
 }
 
 #n-bar {

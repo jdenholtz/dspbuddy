@@ -6,6 +6,8 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     
     <script src="https://d3js.org/d3.v4.min.js"></script>
     
@@ -19,6 +21,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <%= link_to 'DSPBuddy', root_path, class: 'navbar-brand' %>
+      <%= link_to 'Public Datasets', datasets_path, class: 'nav-link' %>
 
 
 
