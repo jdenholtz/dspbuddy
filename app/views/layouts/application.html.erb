@@ -21,29 +21,31 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <%= link_to 'DSPBuddy', root_path, class: 'navbar-brand' %>
-      <%= link_to 'Public Datasets', datasets_path, class: 'nav-link' %>
-
-
-
+      
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul class="navbar-nav mr-auto mt-2 mt-md-0">
-          </ul>
-          <ul class="navbar-nav">
+        <ul class="navbar-nav mr-auto mt-2 mt-md-0">
+          <li class="nav-item">
+            <%= link_to 'Public Datasets', datasets_path, class: 'nav-link' %>
+          </li>
+        </ul>
+        <ul class="navbar-nav mr-auto mt-2 mt-md-0">
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <%= link_to 'New Dataset', new_dataset_path, class: 'nav-link' %>
+          </li>
+          <% if user_signed_in? %>
             <li class="nav-item">
-              <%= link_to 'New Dataset', new_dataset_path, class: 'nav-link' %>
+              <%= link_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'nav-link' %>
             </li>
-            <% if user_signed_in? %>
-              <li class="nav-item">
-                <%= link_to 'Sign Out', destroy_user_session_path, method: :delete, class: 'nav-link' %>
-              </li>
-            <% else %>
+          <% else %>
             <li class="nav-item">
               <%= link_to 'Sign In', new_user_session_path, class: 'nav-link' %>
             </li>
           <% end %>
         </ul>
-          
-        </div>
+        
+      </div>
     </nav>
 
 

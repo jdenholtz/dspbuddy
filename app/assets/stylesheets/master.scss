@@ -1,10 +1,10 @@
 @import "bootstrap";
 
 body{
-    /*background-color: #A68CD8;*/
-    /*background-color: #826E78;*/
-    background-color: #D6D6D6;
-    background: image_url('wood.jpeg') no-repeat center center fixed;
+    background-color: black;
+    background: image_url('wood.jpg') no-repeat center center fixed;
+    /*background: image_url('wood8.jpg') no-repeat center center fixed;*/
+    /*background: image_url('wood7.png') no-repeat center center fixed;*/
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -85,6 +85,10 @@ p {
 
 .navbar-nav a {
   color: black;
+}
+
+.nav-link a {
+  white-space: nowrap;
 }
 
 #n-bar {

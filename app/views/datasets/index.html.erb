@@ -3,23 +3,21 @@
 <br />
 <div class="col-10 offset-1">
   <% @datasets.each do |dataset| %>
-    <div class="text-center inset-box fancy-link">
-      <h1><%= link_to dataset.title, dataset_path(dataset) %></h1>
-    </div>
-    <div class="text-center inset-box shift-down">
-      <h2><%= dataset.description %></h2>
-      <h2>Number of Channels: <%= dataset.channels %></h2>
-      <h2>Samples Per Second: <%= dataset.sps %></h2>
-      <% if dataset.share == true %>
-        <h2>Private:  No</h2>
-      <% else %>
-        <h2>Private:  Yes</h2>
+    <% if dataset.share == true %>
+
+      <div class="text-center inset-box fancy-link">
+        <h1><%= link_to dataset.title, dataset_path(dataset) %></h1>
+      </div>
+      <div class="text-center inset-box shift-down">
+        <h2><%= dataset.description %></h2>
+        <h2>Number of Channels: <%= dataset.channels %></h2>
+        <h2>Samples Per Second: <%= dataset.sps %></h2>
+        <% if dataset.user.present? %>
+          <h2><small><%= dataset.user.email %></small></h2>
+        <% end %>
+      </div>
+      <br />
       <% end %>
-      <% if dataset.user.present? %>
-        <h2><small><%= dataset.user.email %></small></h2>
-      <% end %>
-    </div>
-    <br />
 <% end %>
   
 </div>
