@@ -5,7 +5,7 @@ Introduction
 * This Web App is digital signal database with built in visualization and processing tools that utilizes the D3.js library and JavaScript to provide an attractive fluid user interface.  DSPBuddy can allow users to view and process digital signals from any device connected to the internet with no additional software installed.
 
 
-Fremework
+Framework
 
 * Ruby on Rails app with PostgreSQL.
 
